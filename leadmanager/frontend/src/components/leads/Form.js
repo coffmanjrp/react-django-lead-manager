@@ -18,6 +18,12 @@ const Form = () => {
     e.preventDefault();
 
     dispatch(addLead(formData));
+
+    setFormData({
+      name: '',
+      email: '',
+      message: '',
+    });
   };
 
   return (
