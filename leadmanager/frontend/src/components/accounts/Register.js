@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { register } from '../../actions/auth';
+import { createMessage } from '../../actions/messages';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +12,8 @@ const Register = () => {
     password2: '',
   });
   const { username, email, password, password2 } = formData;
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,8 +21,22 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log('submit');
+    if (password !== password2) {
+      dispatch(createMessage({ passwordNotMatch: 'Passwords do not match' }));
+    } else {
+      const newUser = {
+        username,
+        email,
+        password,
+      };
+
+      dispatch(register(newUser));
+    }
   };
+
+  if (isAuthenticated) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <div className="col-md-6 m-auto">

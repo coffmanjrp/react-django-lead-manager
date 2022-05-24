@@ -15,7 +15,9 @@ import { loadUser } from '../actions/auth';
 const App = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => dispatch(loadUser()), []);
+  useEffect(() => {
+    dispatch(loadUser());
+  }, []);
 
   return (
     <Router>
